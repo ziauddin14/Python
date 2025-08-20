@@ -1,0 +1,5 @@
+Hello! Yeh meri pehli file hai.
+Main Python seekh raha hoon.
+File handling bahut interesting hai!
+
+Yeh naya line hai jo append kiya gaya hai.
