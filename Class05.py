@@ -43,13 +43,13 @@ print(s[::2])        # Output: Aifc ntnlgnc
 #     count the number of spaces
 #     replace all spaces with -
 
-# sentence = input("Enter a sentence: ")
-# total_characters = len(sentence)
-# print("Total characters:", total_characters)
-# space_count = sentence.count(" ")
-# print("Total spaces:", space_count)
-# modified_sentence = sentence.replace(" ", "-")
-# print("Modified sentence:", modified_sentence)
+sentence = input("Enter a sentence: ")
+total_characters = len(sentence)
+print("Total characters:", total_characters)
+space_count = sentence.count(" ")
+print("Total spaces:", space_count)
+modified_sentence = sentence.replace(" ", "-")
+print("Modified sentence:", modified_sentence)
 # print all character except last 3 character
 sentence = "Artificial"
 print("All characters except last 3:", sentence[:-3])
@@ -64,3 +64,12 @@ word = "MACHINELARNING"
 print("Every 2nd character from start:", word[::2])
 print("Every 2nd character from end:", word[::-2])
 print("Reversed first 6 characters:", word[:6][::-1])
+
+# palindrome kia hota h 
+# A palindrome is a word, phrase, number, or other sequence of characters that reads the same forward and backward (ignoring spaces, punctuation, and capitalization). Examples include "madam", "racecar", and "A man, a plan, a canal, Panama!"
+# Check if a string is palindrome or not
+sentence = input("Enter a string: ")
+if sentence == sentence[::-1]:
+    print("The string is a palindrome.")
+else:
+    print("The string is not a palindrome.")
