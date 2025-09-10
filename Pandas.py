@@ -111,6 +111,37 @@ print("Max Marks:", df['Marks'].max())
 print("Min Marks:", df['Marks'].min())
 print("Sum of Marks:", df['Marks'].sum())
 df.to_csv('students.csv', index=False)  # Saving to CSV
+ df_loaded = pd.read_csv('students.csv')  # Loading from CSV
+ print(df_loaded.head())  # First 5 rows of loaded CSV
+ print(df_loaded)
+
+
+#**************************Pandas Indexing & Selection**************************
+# Q1 – loc (label-based)
+# John ke English marks print karo.
+# Q2 – iloc (position-based)
+# 3rd row (index=2 → John) aur 1st column (index=0 → Math) ka value print karo.
+# Q3 – Conditional Selection
+# Wo students print karo jinke Math marks ≥ 80 hain.
+# Q4 – Fancy Indexing
+# Ali aur Sara ke Science aur English marks ek sath print karo.
+
+data = {
+    'Math': [85, 70, 90, 60, 75],
+    'English': [78, 65, 88, 72, 80],
+    'Science': [92, 75, 85, 70, 95]
+}
+students = ['Ali', 'Sara', 'John', 'Zia', 'Doe']
+
+df = pd.DataFrame(data, index=students)
+print(df)
+
+print(df.loc['John', 'English'])  # John ka English score
+print(df.iloc[2, 0])  # John ka Math score
+print(df[df['Math'] > 80])  # Students jinke Math score 80 se upar hain
+print(df.loc[['Ali', 'Sara'], ['Science', 'English']])  # Ali aur Sara ke Science aur English scores
+
 df_loaded = pd.read_csv('students.csv')  # Loading from CSV
 print(df_loaded.head())  # First 5 rows of loaded CSV
 print(df_loaded)
+
