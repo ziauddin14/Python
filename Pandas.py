@@ -141,7 +141,113 @@ print(df.iloc[2, 0])  # John ka Math score
 print(df[df['Math'] > 80])  # Students jinke Math score 80 se upar hain
 print(df.loc[['Ali', 'Sara'], ['Science', 'English']])  # Ali aur Sara ke Science aur English scores
 
+
+# ****************Pandas Data Cleaning********************
+
+# import pandas as pd
+
+# data = {
+#     'Name': ['Ali', 'Sara', 'Ali', None, 'Hina '],
+#     'Marks': ['85', '90', None, '75 ', '95'],
+#     'City': ['Lahore', 'Karachi', 'Lahore', 'Islamabad', 'Karachi']
+# }
+
+# df = pd.DataFrame(data)
+
+# # 1. Fill missing values
+# df['Name'] = df['Name'].fillna('Unknown').str.strip().str.lower()
+# df['Marks'] = df['Marks'].str.strip().astype(float)
+# df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
+
+# # 2. Remove duplicates
+# df = df.drop_duplicates()
+
+# print(df)
+
+# Practice Problem 02*************
+# import pandas as pd
+
+# data = {
+#     'Product': ['Mobile ', 'Laptop', None, 'Tablet', 'Laptop', 'Camera '],
+#     'Price': ['20000', '55000', '30000 ', None, '55000', '15000 '],
+#     'Quantity': [5, None, 10, 7, 5, None],
+#     'City': ['Lahore', 'Karachi', 'Karachi', 'Islamabad', 'Karachi', 'Lahore']
+# }
+
+# df = pd.DataFrame(data)
+# df['Product'] = df['Product'].fillna("Unknown")
+# df['Quantity'] = df['Quantity'].fillna(0)
+
+# df['Price'] = df['Price'].str.strip()
+# df['Price'] = pd.to_numeric(df['Price'])
+# df['Price'] = df['Price'].fillna(df['Price'].median())
+
+# df['Product'] = df['Product'].str.strip().str.lower()
+
+# df = df.drop_duplicates()
+
+# df['Quantity'] = df['Quantity'].astype('Int16')
+
+# print(df)
+
+
+# Practice Problem 03******************
+# import pandas as pd
+
+# data = {
+#     'Customer': ['Aisha ', ' Bilal', 'Aisha ', None, 'Omar', 'Zara'],
+#     'Age': ['25', '30 ', None, '40', '22', '30'],
+#     'Purchase': ['1000', '2000', '1000', '3000 ', None, '2000'],
+#     'City': ['Karachi', 'Lahore', 'Karachi', 'Islamabad', 'Lahore', 'Lahore']
+# }
+
+# df = pd.DataFrame(data)
+# print(df)
+
+# df['Customer'] = df['Customer'].str.strip().str.lower()
+# df['Customer'] = df['Customer'].fillna("Unknown")
+# df['Purchase'] = df['Purchase'].fillna(0)
+# df['Purchase'] = pd.to_numeric(df['Purchase'])
+
+# df['Age'] = df['Age'].str.strip()
+# df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
+# df['Age'] = df['Age'].fillna(df['Age'].mean())
+
+
+# df = df.drop_duplicates()
+
+# print(df)
+
+# 📌 Practice Problem 4 (Data Cleaning)
+import pandas as pd
+
+data = {
+    'Employee': [' Ali', 'Sara ', None, 'Hina', 'Ali', 'Zeeshan '],
+    'Salary': ['50000 ', '60000', None, '55000', '50000', '70000 '],
+    'Dept': ['IT', 'HR', 'HR', 'Finance', 'IT', None],
+    'Experience': ['2', '5 ', '3', None, '2', '10']
+}
+
+df = pd.DataFrame(data)
+print("Before Cleaning:\n", df)
+
+df['Employee'] = df['Employee'].str.strip().str.lower()
+df['Employee'] = df['Employee'].fillna("Unknown")
+df['Dept'] = df['Dept'].str.strip().str.lower()
+df['Dept'] = df['Dept'].fillna("Unknown")
+
+df['Salary'] = pd.to_numeric(df['Salary'], errors='coerce')
+df['Salary'] = df['Salary'].fillna(df['Salary'].median())
+
+
+df['Experience'] = pd.to_numeric(df['Experience'], errors='coerce')
+df['Experience'] = df['Experience'].fillna(df['Experience'].mean())
+
+print("After Cleaning:\n", df)
+
+
 df_loaded = pd.read_csv('students.csv')  # Loading from CSV
 print(df_loaded.head())  # First 5 rows of loaded CSV
 print(df_loaded)
+
 
