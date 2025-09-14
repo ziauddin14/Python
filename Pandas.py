@@ -250,4 +250,64 @@ df_loaded = pd.read_csv('students.csv')  # Loading from CSV
 print(df_loaded.head())  # First 5 rows of loaded CSV
 print(df_loaded)
 
+# ***********************📊 Practice Problems (Pandas GroupBy)****************
+# Problem 1 (Easy)
+# Ek CSV me data hai:
+# Name	Class	Marks
+# Ali	10	85
+# Sara	10	92
+# Ahmed	9	78
+# Ayesha	9	88
+# Umar	10	75
+# 👉 Task: Har class ka average marks nikalna.
+
+data = {
+    'Name': [' Ali', 'Sara ','Ahmed', 'Ayesha','Umar'],
+    'Class': ['10', '10','9','9','10'],
+    'Marks': [85,92,78,88,75],
+}
+df = pd.DataFrame(data)
+grouped = df.groupby("Class")['Marks'].mean()
+print(grouped)
+
+# Problem 2 (Medium)
+# Ek sales dataset hai:
+# Region	Product	Sales
+# North	A	120
+# North	B	90
+# South	A	100
+# South	B	150
+# East	A	200
+# 👉 Task: Har region ka total sales aur max sales product nikalna.
+data = {
+    'Region': [' North', 'North ','South', 'South','East'],
+    'Product': ['A', 'B','A','B','A'],
+    'Sales': [120,90,100,150,200],
+}
+df = pd.DataFrame(data)
+totalSale = df.groupby("Region")['Sales'].sum()
+# print("Total Sales by Region:\n", totalSale)
+max_sale = df.loc[df.groupby("Region")["Sales"].idxmax()]
+print(max_sale)
+
+
+# Problem 3 (Tricky)
+# Ek students dataset hai:
+# Name	Class	Subject	Marks
+# Ali	10	Math	85
+# Ali	10	Science	80
+# Sara	10	Math	90
+# Sara	10	Science	95
+# Ahmed	9	Math	70
+# 👉 Task: Har class ke har subject ka highest marks nikalna (yani topper per subject per class).
+data = {
+    'Name': [' Ali', 'Ali ','Sara', 'Sara','Ahmed'],
+    'Class': ['10', '10','10','10','9'],
+    'Subject':['Math','Science','Math','Science','Math'],
+    'Marks': [85,80,90,95,70],
+}
+df = pd.DataFrame(data)
+highst_marks = df.loc[df.groupby(["Class","Subject"])["Marks"].idxmax()]
+print(highst_marks)
+
 
