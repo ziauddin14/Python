@@ -14,7 +14,7 @@ plt.show()
 
 
 #*******Random Variable Discrete **************
-# import random
+import random
 # Roll dice 1000 times
 rolls = [random.randint(1, 6) for _ in range(1000)]
 
