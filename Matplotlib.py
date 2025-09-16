@@ -38,3 +38,4 @@ plt.ylabel("Frequency")
 plt.title("Random Continuous Variable: Heights")
 plt.grid(True)
 plt.show()
+

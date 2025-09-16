@@ -111,9 +111,9 @@ print("Max Marks:", df['Marks'].max())
 print("Min Marks:", df['Marks'].min())
 print("Sum of Marks:", df['Marks'].sum())
 df.to_csv('students.csv', index=False)  # Saving to CSV
- df_loaded = pd.read_csv('students.csv')  # Loading from CSV
- print(df_loaded.head())  # First 5 rows of loaded CSV
- print(df_loaded)
+df_loaded = pd.read_csv('students.csv')  # Loading from CSV
+print(df_loaded.head())  # First 5 rows of loaded CSV
+print(df_loaded)
 
 
 #**************************Pandas Indexing & Selection**************************
@@ -146,77 +146,77 @@ print(df.loc[['Ali', 'Sara'], ['Science', 'English']])  # Ali aur Sara ke Scienc
 
 # import pandas as pd
 
-# data = {
-#     'Name': ['Ali', 'Sara', 'Ali', None, 'Hina '],
-#     'Marks': ['85', '90', None, '75 ', '95'],
-#     'City': ['Lahore', 'Karachi', 'Lahore', 'Islamabad', 'Karachi']
-# }
+data = {
+    'Name': ['Ali', 'Sara', 'Ali', None, 'Hina '],
+    'Marks': ['85', '90', None, '75 ', '95'],
+    'City': ['Lahore', 'Karachi', 'Lahore', 'Islamabad', 'Karachi']
+}
 
-# df = pd.DataFrame(data)
+df = pd.DataFrame(data)
 
-# # 1. Fill missing values
-# df['Name'] = df['Name'].fillna('Unknown').str.strip().str.lower()
-# df['Marks'] = df['Marks'].str.strip().astype(float)
-# df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
+# 1. Fill missing values
+df['Name'] = df['Name'].fillna('Unknown').str.strip().str.lower()
+df['Marks'] = df['Marks'].str.strip().astype(float)
+df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
 
-# # 2. Remove duplicates
-# df = df.drop_duplicates()
+# 2. Remove duplicates
+df = df.drop_duplicates()
 
-# print(df)
+print(df)
 
 # Practice Problem 02*************
 # import pandas as pd
 
-# data = {
-#     'Product': ['Mobile ', 'Laptop', None, 'Tablet', 'Laptop', 'Camera '],
-#     'Price': ['20000', '55000', '30000 ', None, '55000', '15000 '],
-#     'Quantity': [5, None, 10, 7, 5, None],
-#     'City': ['Lahore', 'Karachi', 'Karachi', 'Islamabad', 'Karachi', 'Lahore']
-# }
+data = {
+    'Product': ['Mobile ', 'Laptop', None, 'Tablet', 'Laptop', 'Camera '],
+    'Price': ['20000', '55000', '30000 ', None, '55000', '15000 '],
+    'Quantity': [5, None, 10, 7, 5, None],
+    'City': ['Lahore', 'Karachi', 'Karachi', 'Islamabad', 'Karachi', 'Lahore']
+}
 
-# df = pd.DataFrame(data)
-# df['Product'] = df['Product'].fillna("Unknown")
-# df['Quantity'] = df['Quantity'].fillna(0)
+df = pd.DataFrame(data)
+df['Product'] = df['Product'].fillna("Unknown")
+df['Quantity'] = df['Quantity'].fillna(0)
 
-# df['Price'] = df['Price'].str.strip()
-# df['Price'] = pd.to_numeric(df['Price'])
-# df['Price'] = df['Price'].fillna(df['Price'].median())
+df['Price'] = df['Price'].str.strip()
+df['Price'] = pd.to_numeric(df['Price'])
+df['Price'] = df['Price'].fillna(df['Price'].median())
 
-# df['Product'] = df['Product'].str.strip().str.lower()
+df['Product'] = df['Product'].str.strip().str.lower()
 
-# df = df.drop_duplicates()
+df = df.drop_duplicates()
 
-# df['Quantity'] = df['Quantity'].astype('Int16')
+df['Quantity'] = df['Quantity'].astype('Int16')
 
-# print(df)
+print(df)
 
 
 # Practice Problem 03******************
 # import pandas as pd
 
-# data = {
-#     'Customer': ['Aisha ', ' Bilal', 'Aisha ', None, 'Omar', 'Zara'],
-#     'Age': ['25', '30 ', None, '40', '22', '30'],
-#     'Purchase': ['1000', '2000', '1000', '3000 ', None, '2000'],
-#     'City': ['Karachi', 'Lahore', 'Karachi', 'Islamabad', 'Lahore', 'Lahore']
-# }
+data = {
+    'Customer': ['Aisha ', ' Bilal', 'Aisha ', None, 'Omar', 'Zara'],
+    'Age': ['25', '30 ', None, '40', '22', '30'],
+    'Purchase': ['1000', '2000', '1000', '3000 ', None, '2000'],
+    'City': ['Karachi', 'Lahore', 'Karachi', 'Islamabad', 'Lahore', 'Lahore']
+}
 
-# df = pd.DataFrame(data)
-# print(df)
+df = pd.DataFrame(data)
+print(df)
 
-# df['Customer'] = df['Customer'].str.strip().str.lower()
-# df['Customer'] = df['Customer'].fillna("Unknown")
-# df['Purchase'] = df['Purchase'].fillna(0)
-# df['Purchase'] = pd.to_numeric(df['Purchase'])
+df['Customer'] = df['Customer'].str.strip().str.lower()
+df['Customer'] = df['Customer'].fillna("Unknown")
+df['Purchase'] = df['Purchase'].fillna(0)
+df['Purchase'] = pd.to_numeric(df['Purchase'])
 
-# df['Age'] = df['Age'].str.strip()
-# df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
-# df['Age'] = df['Age'].fillna(df['Age'].mean())
+df['Age'] = df['Age'].str.strip()
+df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
+df['Age'] = df['Age'].fillna(df['Age'].mean())
 
 
-# df = df.drop_duplicates()
+df = df.drop_duplicates()
 
-# print(df)
+print(df)
 
 # 📌 Practice Problem 4 (Data Cleaning)
 import pandas as pd
@@ -310,169 +310,4 @@ df = pd.DataFrame(data)
 highst_marks = df.loc[df.groupby(["Class","Subject"])["Marks"].idxmax()]
 print(highst_marks)
 
-
-=======
-# ****************Pandas Data Cleaning********************
-
-# import pandas as pd
-
-# data = {
-#     'Name': ['Ali', 'Sara', 'Ali', None, 'Hina '],
-#     'Marks': ['85', '90', None, '75 ', '95'],
-#     'City': ['Lahore', 'Karachi', 'Lahore', 'Islamabad', 'Karachi']
-# }
-
-# df = pd.DataFrame(data)
-
-# # 1. Fill missing values
-# df['Name'] = df['Name'].fillna('Unknown').str.strip().str.lower()
-# df['Marks'] = df['Marks'].str.strip().astype(float)
-# df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
-
-# # 2. Remove duplicates
-# df = df.drop_duplicates()
-
-# print(df)
-
-# Practice Problem 02*************
-# import pandas as pd
-
-# data = {
-#     'Product': ['Mobile ', 'Laptop', None, 'Tablet', 'Laptop', 'Camera '],
-#     'Price': ['20000', '55000', '30000 ', None, '55000', '15000 '],
-#     'Quantity': [5, None, 10, 7, 5, None],
-#     'City': ['Lahore', 'Karachi', 'Karachi', 'Islamabad', 'Karachi', 'Lahore']
-# }
-
-# df = pd.DataFrame(data)
-# df['Product'] = df['Product'].fillna("Unknown")
-# df['Quantity'] = df['Quantity'].fillna(0)
-
-# df['Price'] = df['Price'].str.strip()
-# df['Price'] = pd.to_numeric(df['Price'])
-# df['Price'] = df['Price'].fillna(df['Price'].median())
-
-# df['Product'] = df['Product'].str.strip().str.lower()
-
-# df = df.drop_duplicates()
-
-# df['Quantity'] = df['Quantity'].astype('Int16')
-
-# print(df)
-
-
-# Practice Problem 03******************
-# import pandas as pd
-
-# data = {
-#     'Customer': ['Aisha ', ' Bilal', 'Aisha ', None, 'Omar', 'Zara'],
-#     'Age': ['25', '30 ', None, '40', '22', '30'],
-#     'Purchase': ['1000', '2000', '1000', '3000 ', None, '2000'],
-#     'City': ['Karachi', 'Lahore', 'Karachi', 'Islamabad', 'Lahore', 'Lahore']
-# }
-
-# df = pd.DataFrame(data)
-# print(df)
-
-# df['Customer'] = df['Customer'].str.strip().str.lower()
-# df['Customer'] = df['Customer'].fillna("Unknown")
-# df['Purchase'] = df['Purchase'].fillna(0)
-# df['Purchase'] = pd.to_numeric(df['Purchase'])
-
-# df['Age'] = df['Age'].str.strip()
-# df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
-# df['Age'] = df['Age'].fillna(df['Age'].mean())
-
-
-# df = df.drop_duplicates()
-
-# print(df)
-
-# 📌 Practice Problem 4 (Data Cleaning)
-import pandas as pd
-
-data = {
-    'Employee': [' Ali', 'Sara ', None, 'Hina', 'Ali', 'Zeeshan '],
-    'Salary': ['50000 ', '60000', None, '55000', '50000', '70000 '],
-    'Dept': ['IT', 'HR', 'HR', 'Finance', 'IT', None],
-    'Experience': ['2', '5 ', '3', None, '2', '10']
-}
-
-df = pd.DataFrame(data)
-# print("Before Cleaning:\n", df)
-
-df['Employee'] = df['Employee'].str.strip().str.lower()
-df['Employee'] = df['Employee'].fillna("Unknown")
-df['Dept'] = df['Dept'].str.strip().str.lower()
-df['Dept'] = df['Dept'].fillna("Unknown")
-
-df['Salary'] = pd.to_numeric(df['Salary'], errors='coerce')
-df['Salary'] = df['Salary'].fillna(df['Salary'].median())
-
-
-df['Experience'] = pd.to_numeric(df['Experience'], errors='coerce')
-df['Experience'] = df['Experience'].fillna(df['Experience'].mean())
-
-# print("After Cleaning:\n", df)
-
-
-# ***********************📊 Practice Problems (Pandas GroupBy)****************
-# Problem 1 (Easy)
-# Ek CSV me data hai:
-# Name	Class	Marks
-# Ali	10	85
-# Sara	10	92
-# Ahmed	9	78
-# Ayesha	9	88
-# Umar	10	75
-# 👉 Task: Har class ka average marks nikalna.
-
-data = {
-    'Name': [' Ali', 'Sara ','Ahmed', 'Ayesha','Umar'],
-    'Class': ['10', '10','9','9','10'],
-    'Marks': [85,92,78,88,75],
-}
-df = pd.DataFrame(data)
-grouped = df.groupby("Class")['Marks'].mean()
-print(grouped)
-
-# Problem 2 (Medium)
-# Ek sales dataset hai:
-# Region	Product	Sales
-# North	A	120
-# North	B	90
-# South	A	100
-# South	B	150
-# East	A	200
-# 👉 Task: Har region ka total sales aur max sales product nikalna.
-data = {
-    'Region': [' North', 'North ','South', 'South','East'],
-    'Product': ['A', 'B','A','B','A'],
-    'Sales': [120,90,100,150,200],
-}
-df = pd.DataFrame(data)
-totalSale = df.groupby("Region")['Sales'].sum()
-# print("Total Sales by Region:\n", totalSale)
-max_sale = df.loc[df.groupby("Region")["Sales"].idxmax()]
-print(max_sale)
-
-
-# Problem 3 (Tricky)
-# Ek students dataset hai:
-# Name	Class	Subject	Marks
-# Ali	10	Math	85
-# Ali	10	Science	80
-# Sara	10	Math	90
-# Sara	10	Science	95
-# Ahmed	9	Math	70
-# 👉 Task: Har class ke har subject ka highest marks nikalna (yani topper per subject per class).
-data = {
-    'Name': [' Ali', 'Ali ','Sara', 'Sara','Ahmed'],
-    'Class': ['10', '10','10','10','9'],
-    'Subject':['Math','Science','Math','Science','Math'],
-    'Marks': [85,80,90,95,70],
-}
-df = pd.DataFrame(data)
-highst_marks = df.loc[df.groupby(["Class","Subject"])["Marks"].idxmax()]
-print(highst_marks)
 
