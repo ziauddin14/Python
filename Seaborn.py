@@ -40,3 +40,61 @@ plt.show()
 sns.lmplot(x="Hours_Studied", y="Marks", data=df, hue="Gender")
 plt.title("Regression Plot: Hours vs Marks (by Gender)")
 plt.show()
+
+
+
+#***********Seaborn Familt Pllots***************
+
+
+# Sample Dataset
+df = sns.load_dataset("tips")   # Built-in dataset (restaurant tips)
+
+# ---------- 1. Relational Plots ----------
+plt.figure(figsize=(6,4))
+sns.scatterplot(x="total_bill", y="tip", data=df, hue="sex")
+plt.title("Scatter Plot: Bill vs Tip")
+plt.show()
+
+plt.figure(figsize=(6,4))
+sns.lineplot(x="size", y="tip", data=df, marker="o", ci=None)
+plt.title("Line Plot: Group Size vs Tip")
+plt.show()
+
+
+# ---------- 2. Categorical Plots ----------
+plt.figure(figsize=(6,4))
+sns.barplot(x="day", y="total_bill", data=df, hue="sex", ci=None)
+plt.title("Bar Plot: Avg Bill by Day & Gender")
+plt.show()
+
+plt.figure(figsize=(6,4))
+sns.boxplot(x="day", y="total_bill", data=df)
+plt.title("Box Plot: Bill Distribution by Day")
+plt.show()
+
+plt.figure(figsize=(6,4))
+sns.violinplot(x="day", y="total_bill", data=df, hue="sex", split=True)
+plt.title("Violin Plot: Bill Distribution by Day & Gender")
+plt.show()
+
+
+# ---------- 3. Distribution Plots ----------
+plt.figure(figsize=(6,4))
+sns.histplot(df["total_bill"], bins=20, kde=True)
+plt.title("Histogram + KDE: Total Bill Distribution")
+plt.show()
+
+sns.displot(df, x="total_bill", col="sex", bins=15, kde=True)
+plt.suptitle("Displot: Bills by Gender", y=1.05)
+plt.show()
+
+
+# ---------- 4. Matrix Plots ----------
+plt.figure(figsize=(6,4))
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm", fmt=".2f")
+plt.title("Heatmap: Correlation Matrix")
+plt.show()
+
+sns.clustermap(df.corr(numeric_only=True), cmap="viridis", annot=True)
+plt.suptitle("Clustermap: Correlation Matrix", y=1.05)
+plt.show()
