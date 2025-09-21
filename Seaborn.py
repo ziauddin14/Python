@@ -13,7 +13,7 @@ data = {
 df = pd.DataFrame(data)
 
 # 🎨 Style & Palette
-sns.set_style("whitegrid")
+sns.set_style("darkgrid")
 sns.set_palette("muted")
 
 # 1️⃣ Relational Plot (Scatter)
