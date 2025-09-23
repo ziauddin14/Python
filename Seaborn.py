@@ -10,7 +10,7 @@ data = {
     "Gender": ["M", "F", "M", "F", "M", "M", "F", "M"]
 }
 
-df = pd.DataFrame(data)
+df = pd.DataFrame(data) 
 
 # 🎨 Style & Palette
 sns.set_style("darkgrid")
