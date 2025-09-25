@@ -54,3 +54,22 @@ for studentid, details in students.items():
     print(studentid, ":")
     for key, value in details.items():
         print(key, "=", value)
+        
+#Fibonacci series by using loops
+# n = int(input("Fibonacci series ke kitne numbers chahiye? "))
+# a, b = 0, 1
+# print("Fibonacci series:")
+# for _ in range(n):
+#     print(a)
+#     a, b = b, a + b
+# print()
+num1 = int(input("Enter First Number: "))
+num2 = int(input("Enter Second Number: "))
+terms = int(input("How many terms do you want in the series?"))
+print("Fibonacci Series:")
+print(num1, num2, end=' ')
+for i in range(terms -2):
+    next_num = num1 + num2
+    print(next_num, end=' ')
+    num1 = num2
+    num2 = next_num
