@@ -94,7 +94,7 @@ print(result)
 
 
 # ****************reduce function*****************
-# accum
+# reduce() function (from functools) applies a function cumulatively to an iterable, reducing it to a single value.
 from functools import reduce
 
 nums = [2, 3, 4]
