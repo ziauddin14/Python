@@ -1,4 +1,3 @@
-import re
 
 # ***************Enumerates and Variables Unpacking***********
 # Variable packing: putting multiple value into one variable
