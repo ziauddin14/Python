@@ -1,3 +1,7 @@
+
+#----------------------Basic Python Coding Practice---------------#
+
+
 """
 Task
 Keep asking the user which book they want to borrow
@@ -5,32 +9,32 @@ if the book exist and copies > 0 , lend the book ==> reduce the count by 1
 if no copies availiable ,print 'Not Availiable'
 """
 
-# books = {
-#     "Python Basics": 3,
-#     "Data Science 101": 5,
-#     "Machine Learning": 2,
-#     "Deep Learning Guide": 1,
-# }
-# while True:
-#     print("Available Books and Copies:")
-#     for b, c in books.items():
-#         print(b, "-", c)
-#     userInput = input("ENter the book which you want (or enter done to exit): ")
+books = {
+    "Python Basics": 3,
+    "Data Science 101": 5,
+    "Machine Learning": 2,
+    "Deep Learning Guide": 1,
+}
+while True:
+    print("Available Books and Copies:")
+    for b, c in books.items():
+        print(b, "-", c)
+    userInput = input("ENter the book which you want (or enter done to exit): ")
 
-#     if userInput.lower() == "done":
-#         break
+    if userInput.lower() == "done":
+        break
 
-#     if userInput in books:
-#         if books[userInput] > 0:
-#             books[userInput] -= 1
-#             print(
-#                 f"You have borrowed '{userInput}'. {books[userInput]} copies remaining."
-#             )
-#         else:
-#             print(f"Sorry! ${userInput} is not avaliable in our stock")
-#     else:
-#         print(f"Sorry ${userInput} is not avaliable")
-#     print(f"Current inventory: {books}\n")
+    if userInput in books:
+        if books[userInput] > 0:
+            books[userInput] -= 1
+            print(
+                f"You have borrowed '{userInput}'. {books[userInput]} copies remaining."
+            )
+        else:
+            print(f"Sorry! ${userInput} is not avaliable in our stock")
+    else:
+        print(f"Sorry ${userInput} is not avaliable")
+    print(f"Current inventory: {books}\n")
 
 """
 Task 
@@ -39,16 +43,16 @@ if amount is not divisible by 10, print error.
 Otherwise, break the amount into minimum number of notes
 Show count of each note
 """
-# amount = int(input('Enter a amount: '))
-# if amount %10 != 0:
-#   print('ATM can only dispense amounts divisible by 10')
-# else:
-#   notes = [1000,500,100,50,20,10]
-#   for note in notes:
-#     count = amount // note
-#     if count > 0:
-#       print(note, 'x', count)
-#     amount = amount % note
+amount = int(input('Enter a amount: '))
+if amount %10 != 0:
+  print('ATM can only dispense amounts divisible by 10')
+else:
+  notes = [1000,500,100,50,20,10]
+  for note in notes:
+    count = amount // note
+    if count > 0:
+      print(note, 'x', count)
+    amount = amount % note
 
 """
 Task 
@@ -82,16 +86,22 @@ else:
     print("Result: Student FAILS.")
 
 '''
-marks = list(map(int, input('ENter marks seprated by spaces:').split()))
-percentage = sum(marks) / len(marks)
-fils = 0
-for m in marks:
-  if m <35:
-    fils += 1
-  if fils ==0 and percentage >= 50:
-    print('pass')
-  elif fils == 1 and percentage >= 60:
-    print('pass ith grace')
-  else: 
-    print('fail')
+marks = list(map(int, input('Enter marks separated by spaces: ').split()))
+if len(marks) == 0:
+    print("No marks entered.")
+else:
+    percentage = sum(marks) / len(marks)
+    fils = 0
+    for m in marks:
+        if m < 35:
+            fils += 1
+
+    # Decision after checking all subjects
+    if fils == 0 and percentage >= 50:
+        print('pass')
+    elif fils == 1 and percentage >= 60:
+        print('pass with grace')
+    else:
+        print('fail')
+
 '''
