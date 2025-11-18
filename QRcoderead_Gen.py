@@ -18,7 +18,7 @@ def code_read():
         fileName = fileName + ".png"
     if not os.path.exists(fileName):
         print(" File not found!")
-        return
+        return 
     img = cv2.imread(fileName)
     detector = cv2.QRCodeDetector()
     data, points, _ = detector.detectAndDecode(img)
