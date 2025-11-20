@@ -15,7 +15,8 @@ Bank Account = Data + Action
 class Student:
     def __init__(self, name,age):   #This is  constructor function this fn runs automatically when object create
         self.name = name
-        self.age = age  
+        self.age = age   
+        
     
     def show_details(self):
         print(f"My Name is {self.name} and I'm {self.age} years old.")    
