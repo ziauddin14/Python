@@ -77,3 +77,5 @@ while count < max_tries:
 if count == max_tries and user_input != secret:
     print("You Lost! The secret number was:", secret)
 
+#Adding Score System: easy: 10(-2), medium:50(-5), hard:100(-10)
+#Replay  option
