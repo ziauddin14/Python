@@ -13,7 +13,7 @@ transformation, aggregation, and visualization, making it a popular choice for d
 Note: Columns length must be same in all rows.
 '''
 import pandas as pd
-'''
+
 data = {
     'StudentID': [101, 102, 103, 104, 105],
     'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
@@ -43,7 +43,7 @@ print(df['Score'].min())   # Find minimum score
 math_scores = df[df['Subject'] == 'Math']['Score'].mean()
 print("Average Math Score:", math_scores)
 
-'''
+
 
 data = {
     "EmpID": [201, 202, 203, 204, 205, 206, 207, 208],
