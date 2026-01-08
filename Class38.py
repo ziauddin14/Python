@@ -13,7 +13,7 @@ transformation, aggregation, and visualization, making it a popular choice for d
 Note: Columns length must be same in all rows.
 '''
 import pandas as pd
-
+  
 data = {
     'StudentID': [101, 102, 103, 104, 105],
     'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
