@@ -1,0 +1,379 @@
+import os
+import uuid
+import secrets
+
+from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator, RegexValidator
+from django.db import models
+from django.utils import timezone
+
+from hhc.users.models import User
+
+
+# -------------------- Upload Paths --------------------
+def profile_upload_path(instance, filename):
+    role = instance.__class__.__name__.lower()
+    return os.path.join("profiles", f"{role}-{instance.pk or 'new'}", "profile_photo", filename)
+
+
+def cnic_front_upload_path(instance, filename):
+    role = instance.__class__.__name__.lower()
+    return os.path.join("cnic", f"{role}-{instance.pk or 'new'}", "front", filename)
+
+
+def cnic_back_upload_path(instance, filename):
+    role = instance.__class__.__name__.lower()
+    return os.path.join("cnic", f"{role}-{instance.pk or 'new'}", "back", filename)
+
+
+# -------------------- Base Profile --------------------
+class BaseProfile(models.Model):
+    """Abstract base model for shared user profile info."""
+
+    GENDER_CHOICES = [("Male", "Male"), ("Female", "Female"), ("Other", "Other")]
+    MARITAL_CHOICES = [
+        ("single", "Single"),
+        ("married", "Married"),
+        ("widowed", "Widowed"),
+        ("divorced", "Divorced"),
+    ]
+    BLOOD_GROUP_CHOICES = [
+        ("A+", "A+"),
+        ("A-", "A-"),
+        ("B+", "B+"),
+        ("B-", "B-"),
+        ("AB+", "AB+"),
+        ("AB-", "AB-"),
+        ("O+", "O+"),
+        ("O-", "O-"),
+    ]
+
+    mobile = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.CharField(default="Other", max_length=10, choices=GENDER_CHOICES)
+
+    cnic = models.CharField(
+        max_length=15,
+        unique=True,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r"^\d{5}-\d{7}-\d{1}$",
+                message="CNIC must be in the format 12345-1234567-1",
+            ),
+        ],
+        help_text="Format: 12345-1234567-1 (optional)",
+    )
+
+    date_of_birth = models.DateField(null=True, blank=True)
+
+    profile_photo = models.ImageField(
+        upload_to=profile_upload_path,
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(["jpg", "jpeg", "png", "webp"])],
+    )
+
+    cnic_front_file = models.FileField(
+        upload_to=cnic_front_upload_path,
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(["jpg", "jpeg", "png", "webp", "pdf"])],
+    )
+    cnic_back_file = models.FileField(
+        upload_to=cnic_back_upload_path,
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(["jpg", "jpeg", "png", "webp", "pdf"])],
+    )
+
+    marital_status = models.CharField(max_length=20, choices=MARITAL_CHOICES, blank=True, null=True)
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, blank=True, null=True)
+
+    nationality = models.CharField(max_length=100, blank=True, null=True)
+    primary_language = models.CharField(max_length=50, blank=True, null=True)
+
+    address = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    zip_code = models.CharField(max_length=20, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def age(self):
+        if not self.date_of_birth:
+            return None
+        today = timezone.now().date()
+        return today.year - self.date_of_birth.year - (
+            (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day)
+        )
+
+
+# -------------------- Patient --------------------
+class Patient(BaseProfile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="patient_profile")
+
+    education = models.CharField(max_length=100, blank=True)
+    children = models.PositiveIntegerField(default=0, null=True)
+    occupation = models.CharField(max_length=100, blank=True)
+    age_of_retirement = models.PositiveIntegerField(null=True, blank=True)
+
+    primary_doctor = models.ForeignKey(
+        "accounts.MedicalStaff",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="primary_patients",
+    )
+
+    class Status(models.TextChoices):
+        ACTIVE = "active", "Active"
+        INACTIVE = "inactive", "Inactive"
+        ONBOARDING = "onboarding", "Onboarding"
+        DUE = "due", "Needs Attention"
+
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.ONBOARDING, db_index=True)
+
+    def __str__(self):
+        return f"Patient: {self.user.name} ({self.user.role})"
+
+    @property
+    def computed_primary_doctor(self):
+        active_team = self.team_assignments.filter(is_active=True).select_related("team").first()
+        if not active_team:
+            return None
+        return getattr(active_team.team, "lead_doctor", None)
+    
+
+
+# -------------------- Medical Staff --------------------
+class MedicalStaff(BaseProfile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="medical_staff_profile")
+
+    staff_type = models.CharField(
+        max_length=50,
+        choices=[
+            ("General Physician", "General Physician"),
+            ("Surgeon", "Surgeon"),
+            ("Nurse", "Nurse"),
+            ("Therapist", "Therapist"),
+            ("Dietitian", "Dietitian"),
+        ],
+        db_index=True,
+    )
+
+    specialization = models.CharField(max_length=100, blank=True, default="General")
+
+    license_number = models.CharField(max_length=50, unique=True, blank=True)  # ✅ allow auto generate
+
+    def _generate_unique_license(self) -> str:
+        while True:
+            lic = f"LIC-{secrets.token_hex(5).upper()}"
+            if not MedicalStaff.objects.filter(license_number=lic).exists():
+                return lic
+
+    def save(self, *args, **kwargs):
+        lic = (self.license_number or "").strip()
+        self.license_number = self._generate_unique_license() if not lic else lic.upper()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.staff_type}: {self.user.name} (License: {self.license_number})"
+
+    @property
+    def assigned_teams(self):
+        return getattr(self.user, "teams", None)
+
+
+# -------------------- Admin Staff --------------------
+class AdministrativeStaff(BaseProfile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="admin_staff_profile")
+
+    staff_type = models.CharField(
+        max_length=50,
+        choices=[
+            ("Medical Records Officer", "Medical Records Officer"),
+            ("Billing Staff", "Billing Staff"),
+            ("HR Staff", "HR Staff"),
+            ("Receptionist", "Receptionist"),
+            ("Administrator", "Administrator"),
+            ("Patient Coordinator", "Patient Coordinator"),
+            ("Driver", "Driver"),
+        ],
+        db_index=True,
+    )
+
+    def __str__(self):
+        return f"Admin: {self.user.name} ({self.staff_type})"
+
+
+# -------------------- Subscriber --------------------
+class Subscriber(BaseProfile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="subscriber_profile")
+
+    relationship_w_patient = models.CharField(max_length=100, blank=True)
+    occupation = models.CharField(max_length=100, blank=True)
+    education = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return getattr(self.user, "email", None) or getattr(self.user, "username", None) or f"Subscriber #{self.pk}"
+
+
+# -------------------- Plans --------------------
+class Plan(models.Model):
+    PLAN_CHOICES = [
+        ("essential", "Humancare Essential"),
+        ("premium", "Humancare Premium"),
+        ("elite", "Humancare Elite"),
+        ("platinum", "Humancare Platinum"),
+        ("other", "Other"),
+    ]
+
+    code = models.CharField(max_length=20, choices=PLAN_CHOICES, unique=True)
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def clean(self):
+        if self.price_usd <= 0:
+            raise ValidationError({"price_usd": "Plan price must be greater than zero."})
+
+    def __str__(self):
+        return self.name
+
+
+# -------------------- Subscription --------------------
+class Subscription(models.Model):
+    subscription_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    patient = models.ForeignKey("accounts.Patient", on_delete=models.CASCADE, related_name="subscriptions")
+
+    subscriber = models.ForeignKey(
+        "accounts.Subscriber",
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
+        null=True,
+        blank=True,
+    )
+
+    purchased_by = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="purchased_subscriptions",
+    )
+
+    plan = models.ForeignKey("accounts.Plan", on_delete=models.CASCADE, related_name="subscriptions", null=True, blank=True)
+
+    start_date = models.DateField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    confirmation_text = models.CharField(max_length=200, blank=True)
+    stripe_checkout_session_id = models.CharField(max_length=255, blank=True, default="")
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, default="")
+    is_active = models.BooleanField(default=True)
+
+    def clean(self):
+        if self.end_date and self.start_date and self.end_date < self.start_date:
+            raise ValidationError({"end_date": "End date cannot be before start date."})
+
+        # ✅ purchased_by must match subscriber or patient (strict rule)
+        allowed_users = {self.patient.user_id}
+        if self.subscriber:
+            allowed_users.add(self.subscriber.user_id)
+
+        if self.purchased_by_id not in allowed_users:
+            raise ValidationError({"purchased_by": "purchased_by must be patient.user or subscriber.user."})
+
+    def save(self, *args, **kwargs):
+        if not self.start_date:
+            self.start_date = timezone.localdate()
+        if not self.start_time:
+            self.start_time = timezone.localtime().time()
+        if not self.end_date and self.start_date:
+            self.end_date = self.start_date + relativedelta(months=1)
+
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        patient_name = getattr(self.patient.user, "name", "Unknown")
+        purchaser = getattr(self.purchased_by, "display_name", None) or getattr(self.purchased_by, "username", "Unknown")
+        return f"Subscription for {patient_name} purchased by {purchaser}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["patient"],
+                condition=models.Q(is_active=True),
+                name="one_active_subscription_per_patient",
+            ),
+        ]
+
+
+# -------------------- Payment History --------------------
+class PaymentHistory(models.Model):
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name="payments")
+
+    subscriber = models.ForeignKey(
+        Subscriber,
+        on_delete=models.CASCADE,
+        related_name="payment_history",
+        null=True,
+        blank=True,
+    )
+
+    payment_date = models.DateField(auto_now_add=True)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+
+    payment_method = models.CharField(
+        max_length=50,
+        choices=[
+            ("Credit Card", "Credit Card"),
+            ("Bank Transfer", "Bank Transfer"),
+            ("Cash", "Cash"),
+        ],
+    )
+
+    transaction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[
+            ("Pending", "Pending"),
+            ("Completed", "Completed"),
+            ("Failed", "Failed"),
+        ],
+        default="Pending",
+    )
+
+    def clean(self):
+        if self.amount_paid <= 0:
+            raise ValidationError({"amount_paid": "Payment must be greater than 0."})
+
+    def __str__(self):
+        return f"Payment of {self.amount_paid} for {self.subscription.patient.user.name}"
+
+
+# -------------------- Emergency Contact --------------------
+class EmergencyContact(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="emergency_contacts")
+
+    name = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    relationship = models.CharField(max_length=50, blank=True, null=True)
+
+    is_primary = models.BooleanField(default=False)
+
+    def clean(self):
+        if self.is_primary:
+            EmergencyContact.objects.filter(user=self.user, is_primary=True).exclude(pk=self.pk).update(is_primary=False)
+
+    def __str__(self):
+        return f"{self.name} ({self.relationship})"
