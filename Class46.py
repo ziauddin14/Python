@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np
 import matplotlib as plt
+import matplotlib.pyplot as plt
 
 df = pd.read_csv('movie.csv')
 
@@ -30,7 +31,7 @@ print(df.isnull().sum())
 
 #----------IMDB rating distribution------------------#
 plt.figure(figsize=(8, 6))
-plt.hist(df['IMDB_Rating'], bins=20, color='blue', edgecolor='black')
+plt.hist(df['IMDB_Rating'], bins=100, color='blue', edgecolor='black')
 plt.title('Distribution of IMDB Ratings')
 plt.xlabel('IMDB Rating')
 plt.ylabel('Frequency')
