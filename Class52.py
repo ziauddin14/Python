@@ -68,3 +68,7 @@ x = np.array([1, 2, 3, 4, 5])
 y = np.array([10, 20, 30, 40, 50])
 print(np.maximum(x, y)) # This will return the element-wise maximum of the two arrays
 print(np.minimum(x, y)) # This will return the element-wise minimum of the two arrays
+
+
+
+# Revision is countinue
