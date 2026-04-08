@@ -5,6 +5,8 @@ df = pd.read_excel('employees.xlsx')
 print(df)
 
 # loc and iloc
+#loc: yeh label based indexing ke liye use hota hai, jisme hum row aur column ke labels ka use karke data access karte hai
+#iloc: yeh integer based indexing ke liye use hota hai, jisme hum row aur column ke integer position ka use karke data access karte hai
 print(df.loc[15, 'Age']) # This will print the value in the 'Age' column for the row with index 15 using loc
 print(df.iloc[15, 2]) # This will print the value in the 3rd column (index 2) for the row with index 15 using iloc
 
