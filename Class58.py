@@ -1,4 +1,15 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
+hours = np.array([1,2,3,4,5])
+marks = np.array([30,40,50,60,70])
+plt.scatter(hours,marks)
+plt.xlabel("hours studied")
+plt.ylabel("marks scored")
+plt.title("hours studied vs marks scored")
+plt.show()
 '''
 ML is a process of teaching computers to learn patterns
  from data and make predictions or decisions 
@@ -39,19 +50,4 @@ ML Pipeline:
 5: Make Prediction : 
 '''
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-hours = np.array([1,2,3,4,5])
-marks = np.array([30,40,50,60,70])
-plt.scatter(hours,marks)
-plt.xlabel("hours studied")
-plt.ylabel("marks scored")
-plt.title("hours studied vs marks scored")
-plt.show()
-
-
-
-#Linear regression
