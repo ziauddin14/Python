@@ -22,7 +22,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 dtc = DecisionTreeClassifier(
     criterion='entropy',
-    max_depth=3,
+    # max_depth=3,
     random_state=42,
 )
 dtc.fit(X_train, y_train)
@@ -43,7 +43,7 @@ plot_tree(
     filled=True,
     fontsize=10,
     rounded=True,
-    impurity=False,
+    impurity=True,
     node_ids=True
 )
 plt.show()
