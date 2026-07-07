@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import StandardScaler
@@ -24,6 +24,7 @@ X_test = scaler.transform(X_test)
 
 # Build the Neural Network Model
 model = Sequential() 
+# pyrefly: ignore [unexpected-keyword]
 model.add(Dense(16, activation='relu', input_shape=(X_train.shape[1],)))
 model.add(Dense(8, activation='relu')) 
 model.add(Dense(1, activation='sigmoid'))
